@@ -1,7 +1,6 @@
 package com.project.demo.entity;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
 public class Person{
     @Id
     @Column(name = "user_name")
-    private int id;
+    private String UserName;
 
     @Column(name = "email")
     private String Email;
@@ -24,8 +23,8 @@ public class Person{
     @OneToMany(mappedBy = "owner")
     private List<Note> notes;
 
-    public Person(int id, String email, String password, int enable) {
-        this.id = id;
+    public Person(String UserName, String email, String password, int enable) {
+        this.UserName = UserName;
         this.Email = email;
         this.Password = password;
         this.enable = enable;
@@ -34,12 +33,12 @@ public class Person{
     public Person() {
     }
 
-    public int getId() {
-        return id;
+    public String getUserName() {
+        return UserName;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserName(String UserName) {
+        this.UserName = UserName;
     }
 
     public String getEmail() {
@@ -77,7 +76,7 @@ public class Person{
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "UserName=" + UserName +
                 ", Email='" + Email + '\'' +
                 ", Password='" + Password + '\'' +
                 ", enable=" + enable +
