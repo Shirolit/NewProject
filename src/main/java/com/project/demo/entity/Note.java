@@ -17,12 +17,16 @@ public class Note {
     @Column(name = "note_value")
     private String note;
 
+    @Column(name = "Note_Title")
+    private String NoteTitle;
+
     public Note() {
     }
 
-    public Note(int id, String note) {
+    public Note(int id, String note, String noteTitle) {
         this.id = id;
         this.note = note;
+        this.NoteTitle = noteTitle;
     }
 
     public int getId() {
@@ -41,12 +45,28 @@ public class Note {
         this.note = note;
     }
 
+    public Person getOnwer() {
+        return onwer;
+    }
+
+    public void setOnwer(Person onwer) {
+        this.onwer = onwer;
+    }
+    public String getNoteTitle() {
+        return NoteTitle;
+    }
+
+    public void setNoteTitle(String noteTitle) {
+        NoteTitle = noteTitle;
+    }
+
     @Override
     public String toString() {
         return "Note{" +
                 "id=" + id +
                 ", onwer=" + onwer +
                 ", note='" + note + '\'' +
+                ", NoteTitle='" + NoteTitle + '\'' +
                 '}';
     }
 }
