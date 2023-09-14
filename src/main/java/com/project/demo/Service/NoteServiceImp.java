@@ -45,7 +45,7 @@ public class NoteServiceImp implements NoteService{
 
     @Override
     @Transactional
-    public void deleteNote(Note note) {
-        noteDao.deleteNote(note);
+    public void deleteNote(int id) {
+        noteDao.deleteNote(id);
     }
 }

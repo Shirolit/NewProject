@@ -43,8 +43,8 @@ public class NoteImp implements NoteDao{
     }
 
     @Override
-    public void deleteNote(Note note) {
+    public void deleteNote(int id) {
         Query query = entityManager.createQuery("delete from Note where id =:noteId");
-        query.setParameter("noteId",note.getId());
+        query.setParameter("noteId",id);
     }
 }

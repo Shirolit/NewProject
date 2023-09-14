@@ -17,5 +17,5 @@ public interface NoteDao {
 
     public Note getNoteForOwner(Person person);
 
-    public void deleteNote(Note note);
+    public void deleteNote(int id);
 }

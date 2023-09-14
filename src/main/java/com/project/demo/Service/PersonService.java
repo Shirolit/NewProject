@@ -12,8 +12,8 @@ public interface PersonService {
 
     public void updatePerson(Person person);
 
-    public Person getPerson(Person person);
+    public Person getPerson(String UserName);
 
-    public void deletePerson(Person person);
+    public void deletePerson(String UserName);
 
 }

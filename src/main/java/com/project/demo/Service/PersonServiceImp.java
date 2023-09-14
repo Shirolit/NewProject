@@ -34,13 +34,13 @@ public class PersonServiceImp implements PersonService {
 
     @Override
     @Transactional
-    public Person getPerson(Person person) {
-        return personDao.getPerson(person);
+    public Person getPerson(String UserName) {
+        return personDao.getPerson(UserName);
     }
 
     @Override
     @Transactional
-    public void deletePerson(Person person) {
-        personDao.deletePerson(person);
+    public void deletePerson(String UserName) {
+        personDao.deletePerson(UserName);
     }
 }

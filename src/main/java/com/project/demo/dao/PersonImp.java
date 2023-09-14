@@ -31,15 +31,15 @@ public class PersonImp implements PersonDao{
     }
 
     @Override
-    public Person getPerson(Person person) {
-        Person GetPerson = entityManager.find(Person.class,person);
+    public Person getPerson(String UserName) {
+        Person GetPerson = entityManager.find(Person.class,UserName);
         return GetPerson;
     }
 
     @Override
-    public void deletePerson(Person person) {
+    public void deletePerson(String UserName) {
         Query query = entityManager.createQuery("delete from Person where UserName =:DeletePerson");
-        query.setParameter("DeletePerson", person);
+        query.setParameter("DeletePerson", UserName);
         query.executeUpdate();
     }
 }
