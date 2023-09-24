@@ -1,8 +1,15 @@
 package com.project.demo.controller;
 
 import com.project.demo.Service.NoteServiceImp;
-import com.project.demo.entity.Note;
+import com.project.demo.models.Note;
+import com.project.demo.models.Person;
+import com.project.demo.util.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,36 +22,42 @@ public class RESTNoteController {
 
     @PostMapping("")
     public List<Note> ShowAllPerson (){
-        List <Note> allNote = NoteService.getAllNote();
+        List <Note> allNote = NoteService.findAll();
         return allNote;
     }
 
     @GetMapping("/{id}")
-    public Note getPerson(@PathVariable int id){
-        Note note = NoteService.getNote(id);
+    public Note getPerson(@PathVariable("id") int id){
+        Note note = NoteService.findNote(id);
         return note;
     }
 
     @PostMapping("")
-    public Note addNewPerson(@RequestBody Note note){
-        NoteService.saveNote(note);
+    public ResponseEntity<HttpStatus> crate(@RequestBody @Valid Note note, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            StringBuilder errorMsg = new StringBuilder();
 
-        return note;
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError error: errors){
+                errorMsg.append(error.getField()).append(" _ ").append(error.getDefaultMessage()).append(";");
+            }
+
+            throw new PersonNotCreatedException(errorMsg.toString());
+        }
+
+        NoteService.save(note);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+
     }
-
-    @PutMapping("")
-    public Note updatePerson(@RequestBody Note note){
-        NoteService.saveNote(note);
-
-        return note;
+    @ExceptionHandler
+    private ResponseEntity<NoteErrorResponse> handleException(NoteErrorResponse e){
+        NoteErrorResponse response = new NoteErrorResponse("Note with this id wasn't found!",System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-
-    @DeleteMapping("")
-    public String deletePerson(@PathVariable int id){
-        Note note = NoteService.getNote(id);
-
-        NoteService.deleteNote(id);
-
-        return "Note with id = " + id + " was delete";
+    @ExceptionHandler
+    private ResponseEntity<NoteErrorResponse> handleException(NoteNotCreatedException e){
+        NoteErrorResponse response = new NoteErrorResponse(e.getMessage(),System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

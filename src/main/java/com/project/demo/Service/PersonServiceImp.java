@@ -1,46 +1,34 @@
 package com.project.demo.Service;
 
-import com.project.demo.dao.PersonDao;
-import com.project.demo.entity.Person;
-import org.springframework.transaction.annotation.Transactional;
+import com.project.demo.models.Person;
+import com.project.demo.repositories.PersonRepository;
+import com.project.demo.util.PersonNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class PersonServiceImp implements PersonService {
-
+@Transactional(readOnly = true)
+public class PersonServiceImp  {
+    private final PersonRepository personRepository;
     @Autowired
-    public PersonDao personDao;
-
-    @Override
-    @Transactional
-    public void savePerson(Person person) {
-        personDao.savePerson(person);
+    public PersonServiceImp(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
-    @Override
-    @Transactional
-    public List<Person> getAllPerson() {
-        return personDao.getAllPerson();
+    public List<Person> findAll() {
+        return personRepository.findAll();
     }
 
-    @Override
-    @Transactional
-    public void updatePerson(Person person) {
-        personDao.updatePerson(person);
+    public Person findOne(String UserName) {
+        Optional<Person> foundPerson = personRepository.findById(UserName);
+        return foundPerson.orElseThrow(PersonNotFoundException::new);
     }
-
-    @Override
     @Transactional
-    public Person getPerson(String UserName) {
-        return personDao.getPerson(UserName);
-    }
-
-    @Override
-    @Transactional
-    public void deletePerson(String UserName) {
-        personDao.deletePerson(UserName);
+    public void save(Person person){
+        personRepository.save(person);
     }
 }
