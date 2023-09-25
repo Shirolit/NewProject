@@ -1,4 +1,4 @@
-package com.project.demo.Service;
+package com.project.demo.services;
 
 import com.project.demo.models.Note;
 import com.project.demo.models.Person;
@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class NoteServiceImp{
+public class NoteService {
 
     private final NoteRepository noteRepository;
     @Autowired
-    public NoteServiceImp(NoteRepository noteRepository) {
+    public NoteService(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
     }
 
@@ -32,11 +32,13 @@ public class NoteServiceImp{
     public void save(Note note){
         noteRepository.save(note);
     }
+    @Transactional
+    public void update(Note note){
+        noteRepository.save(note);
+    }
+    @Transactional
+    public void delete(Note note){
+        noteRepository.delete(note);
+    }
 
-
-//    @Transactional
-//    public Note getNoteForOwner(Person person) {
-//        return noteRepository.getNoteForOwner(person);
-//    }
-//
 }

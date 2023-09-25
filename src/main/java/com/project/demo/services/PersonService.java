@@ -1,4 +1,4 @@
-package com.project.demo.Service;
+package com.project.demo.services;
 
 import com.project.demo.models.Person;
 import com.project.demo.repositories.PersonRepository;
@@ -12,10 +12,10 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class PersonServiceImp  {
+public class PersonService {
     private final PersonRepository personRepository;
     @Autowired
-    public PersonServiceImp(PersonRepository personRepository) {
+    public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
@@ -30,5 +30,13 @@ public class PersonServiceImp  {
     @Transactional
     public void save(Person person){
         personRepository.save(person);
+    }
+    @Transactional
+    public void update(Person person){
+        personRepository.save(person);
+    }
+    @Transactional
+    public void delete(Person person){
+        personRepository.delete(person);
     }
 }
