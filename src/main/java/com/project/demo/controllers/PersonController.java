@@ -7,6 +7,8 @@ import com.project.demo.util.PersonErrorResponse;
 import com.project.demo.util.PersonNotCreatedException;
 import com.project.demo.util.PersonNotFoundException;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/Person")
+@AllArgsConstructor
 public class PersonController {
-    @Autowired
+
     private PersonService personService;
 
-    @PostMapping("")
+    @GetMapping("")
     public List<PersonDTO> ShowAllPerson (){
         return personService.findAll().stream().map(this::convertToPersonDTO).collect(Collectors.toList());
     }
@@ -36,7 +40,7 @@ public class PersonController {
     }
 
 
-    @PostMapping("")
+    @PostMapping("/create")
     public ResponseEntity<HttpStatus> crate(@RequestBody @Valid PersonDTO personDTO, @NotNull BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             StringBuilder errorMsg = new StringBuilder();
@@ -54,18 +58,18 @@ public class PersonController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/delete/{UserName}")
     public String deletePerson(@PathVariable String UserName){
         personService.delete(personService.findOne(UserName));
 
         return "Person with user name = " + UserName + " was delete";
     }
 
-    @PutMapping("")
-    public PersonDTO updatePerson(@RequestBody PersonDTO personDTO){
+    @PutMapping("/update/{UserName}")
+    public String updatePerson(@RequestBody PersonDTO personDTO){
         personService.update(convertToPerson(personDTO));
 
-        return personDTO;
+        return "Person was update";
     }
 
     @ExceptionHandler
